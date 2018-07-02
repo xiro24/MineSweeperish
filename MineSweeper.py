@@ -7,7 +7,7 @@ class MineSweeper:
 	width = 9;
 	coordsX=[];
 	coordsY=[];
-	point=[0,0];
+	point=[-1,-1];
 	discovered =[];
 	graph = np.zeros((width,height));
 	
@@ -30,41 +30,110 @@ class MineSweeper:
 					positionY = random.randint(1,height-1);
 			coordsX.insert(len(coordsX),positionX);
 			coordsY.insert(len(coordsY),positionY);
-		self.graph[coordsX,coordsY] = 1; 
+		self.graph[coordsX,coordsY] = 9; 
 
 	#represents the entirety of the game to the player
 	def gameboard(self,coordsX,coordsY,height,width):
 		x = coordsX;
 		y = coordsY;
 		if int(self.point[0]) >=0 and int(self.point[1]) >=0:
-			self.graph[int(self.point[0]),int(self.point[1])] = 2;
+			self.graph[int(self.point[0]),int(self.point[1])] = 10;
 			for row in range(width):
 				for column in range(height):
 					if int(self.point[0]) == row and int(self.point[1]) == column:
+					
+					##need to implement checkers
 					#right
 						for i in range(height-column):
-							if self.graph[row,column+i] == 1 and self.graph[row,column+i-1] == 0:
-								self.graph[row,column+i-1] = 3;
-							if self.graph[row,column+i] == 1:
+							bomb =0;
+							if row+1 <9:
+								#bottom right
+								if self.graph[row+1,column+i+1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+								#down
+								if self.graph[row+1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+								#bottom left
+								if self.graph[row+1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+							if row-1 >=0:
+								#top right
+								if self.graph[row-1,column+i+1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+								#top
+								if self.graph[row-1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+								#top left
+								if self.graph[row-1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+									bomb+=1;
+							#right
+							if self.graph[row,column+i] == 9 and self.graph[row,column+i-1] == 0:
+								bomb+=1;
+							#left
+							if self.graph[row,column-i] == 9 and self.graph[row,column+i-1] == 0:
+								bomb+=1;
+							print(bomb);
+							if bomb !=0:
+								self.graph[row,column+i-1] = bomb;
+							if self.graph[row,column+i] == 9:
 								break;
 					#left	
 						for i in range(column):
-							if self.graph[row,column-i] == 1 and self.graph[row,column-i+1] == 0:
-								self.graph[row,column-i+1] = 3;
-							if self.graph[row,column-i] == 1:
+							
+								
+							#if self.graph[row,column-i] == 9 and self.graph[row,column-i+1] == 0:
+								#self.graph[row,column-i+1] = 11;
+							if self.graph[row,column-i] == 9:
 								break;
 					#up
 						for i in range(width-row):
-							if self.graph[row+i,column] == 1 and self.graph[row+i-1,column] == 0:
-								self.graph[row+i-1,column] = 3;
-							if self.graph[row+i,column] == 1:
+							#if self.graph[row+i,column] == 9 and self.graph[row+i-1,column] == 0:
+								#self.graph[row+i-1,column] = 11;
+							if self.graph[row+i,column] == 9:
 								break;
 					#down
 						for i in range(row):
-							if self.graph[row-i,column] == 1 and self.graph[row-i+1,column] == 0:
-								self.graph[row-i+1,column] = 3;
-							if self.graph[row-i,column] == 1:
+							#if self.graph[row-i,column] == 9 and self.graph[row-i+1,column] == 0:
+								#self.graph[row-i+1,column] = 11;
+							if self.graph[row-i,column] == 9:
 								break;
+								
+						#self
+						bomb=0;
+						if row+1<9:
+							#bottom right
+							if column+1<9:
+								if self.graph[row+1,column+1] == 9:
+									bomb+=1;
+							#bottom left
+							if column-1>=0:
+								if self.graph[row+1,column-1] == 9:
+									bomb+=1;
+							#down
+							if self.graph[row+1,column] == 9:
+								bomb+=1;
+						if row-1>=0:
+							#top right
+							if column+1<9:
+								if self.graph[row-1,column+1] == 9:
+									bomb+=1;
+							#top
+							if self.graph[row-1,column] == 9:
+								bomb+=1;
+							#top left
+							if column-1 >=0:
+								if self.graph[row-1,column-1] == 9:
+									bomb+=1;
+						#right
+						if column+1<9:
+							if self.graph[row,column+1] == 9:
+								bomb+=1;
+						#left
+						if column-1>=0:
+							if self.graph[row,column-1] == 9:
+								bomb+=1;
+						print(bomb);
+						self.graph[row,column] = bomb;
 						break;		
 		print(self.graph);
 		
@@ -83,12 +152,28 @@ class MineSweeper:
 				print('|',end='');
 				if self.graph[row,column] == 0:
 					print('   ',end='');
-				elif self.graph[row,column] == 1:
+				elif self.graph[row,column] == 9:
 					print(' B ',end='');
-				elif self.graph[row,column] == 2:
+				elif self.graph[row,column] == 10:
 					print(' V ',end='');
-				elif self.graph[row,column] == 3:
+				elif self.graph[row,column] == 11:
 					print(' N ',end='');
+				elif self.graph[row,column] == 1:
+					print(' 1 ',end='');
+				elif self.graph[row,column] == 2:
+					print(' 2 ',end='');
+				elif self.graph[row,column] == 3:
+					print(' 3 ',end='');
+				elif self.graph[row,column] == 4:
+					print(' 4 ',end='');
+				elif self.graph[row,column] == 5:
+					print(' 5 ',end='');
+				elif self.graph[row,column] == 6:
+					print(' 6 ',end='');
+				elif self.graph[row,column] == 7:
+					print(' 7 ',end='');
+				elif self.graph[row,column] == 8:
+					print(' 8 ',end='');
 				#replace this with the number of bombs surrounding it
 			print('|');
 		
@@ -96,7 +181,7 @@ class MineSweeper:
 	def turn(self):
 		print('insert coordinates. (IE. row,column)');
 		user = input('>');
-		self.cls();
+		##self.cls();
 		
 		#get the coords then plot the section
 		self.point = user.split(',');
