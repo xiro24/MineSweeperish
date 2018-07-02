@@ -48,29 +48,50 @@ class MineSweeper:
 							bomb =0;
 							if row+1 <9:
 								#bottom right
-								if self.graph[row+1,column+i+1] == 9 and self.graph[row,column+i-1] == 0:
-									bomb+=1;
-								#down
-								if self.graph[row+1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
-									bomb+=1;
+								if column+i-1<9:
+									if self.graph[row+1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+										print('a');
+										print('col',column+i+1);
+										print('row',row+1);
+										bomb+=1;
 								#bottom left
-								if self.graph[row+1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+									if self.graph[row+1,column+i-2] == 9 and self.graph[row,column+i-1] == 0:
+										print('vales',self.graph[row+1,column+i-2]);
+										print('col',column+i);
+										print('row',row+1);
+										print('b');
+										bomb+=1;
+								#down
+								if self.graph[row+1,column+i] == 9 and self.graph[row,column+i-1] == 0:
+									print('c');
+									print('col',column+i);
+									print('row',row+1);
+									print('vales',self.graph[row+1,column+i]);
 									bomb+=1;
+									##needs to be corrected
 							if row-1 >=0:
 								#top right
-								if self.graph[row-1,column+i+1] == 9 and self.graph[row,column+i-1] == 0:
-									bomb+=1;
+								if column+i+1<9:
+									if self.graph[row-1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
+										print('d');
+										bomb+=1;
 								#top
-								if self.graph[row-1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
-									bomb+=1;
+								if column+i<9:
+									if self.graph[row-1,column+i] == 9 and self.graph[row,column+i-1] == 0:
+										print('e');
+										bomb+=1;
 								#top left
-								if self.graph[row-1,column+i-1] == 9 and self.graph[row,column+i-1] == 0:
-									bomb+=1;
+								if column+i-1>=0:
+									if self.graph[row-1,column+i-2] == 9 and self.graph[row,column+i-1] == 0:
+										print('f');
+										bomb+=1;
 							#right
 							if self.graph[row,column+i] == 9 and self.graph[row,column+i-1] == 0:
+								print('g');
 								bomb+=1;
 							#left
 							if self.graph[row,column-i] == 9 and self.graph[row,column+i-1] == 0:
+								print('h');
 								bomb+=1;
 							print(bomb);
 							if bomb !=0:
