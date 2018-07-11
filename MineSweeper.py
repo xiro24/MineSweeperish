@@ -255,45 +255,9 @@ class MineSweeper:
 				print(self.graph);
 		
 		#draws the board from the graph
-		print(" "*4,end='');
-		for i in range(width):
-			print("|",i,"",end='');
-		print('|');
-		for row in range(width):
-			print('----'*(width+1));
-			if row != 0:
-				print(row,end='   ');
-			if row ==0:
-				print(row,end='   ');
-			for column in range(height):
-				print('|',end='');
-				if self.graph[row,column] == 0:
-					print('   ',end='');
-				elif self.graph[row,column] == 9:
-					print('   ',end='');
-				elif self.graph[row,column] == 10:
-					print(' X ',end='');
-				elif self.graph[row,column] == 11:
-					print(' N ',end='');
-				elif self.graph[row,column] == 1:
-					print(' 1 ',end='');
-				elif self.graph[row,column] == 2:
-					print(' 2 ',end='');
-				elif self.graph[row,column] == 3:
-					print(' 3 ',end='');
-				elif self.graph[row,column] == 4:
-					print(' 4 ',end='');
-				elif self.graph[row,column] == 5:
-					print(' 5 ',end='');
-				elif self.graph[row,column] == 6:
-					print(' 6 ',end='');
-				elif self.graph[row,column] == 7:
-					print(' 7 ',end='');
-				elif self.graph[row,column] == 8:
-					print(' 8 ',end='');
-				#replace this with the number of bombs surrounding it
-			print('|');
-	def drawBoardFinsih(self,height,width):
+		self.drawBoardFinsih(self.height,self.width,False);
+		
+	def drawBoardFinsih(self,height,width,draw):
 	
 		print(" "*4,end='');
 		for i in range(width):
@@ -309,8 +273,10 @@ class MineSweeper:
 				print('|',end='');
 				if self.graph[row,column] == 0:
 					print('   ',end='');
-				elif self.graph[row,column] == 9:
+				elif self.graph[row,column] == 9 and draw == True:
 					print(' B ',end='');
+				elif self.graph[row,column] == 9 and draw == False:
+					print('   ',end='');
 				elif self.graph[row,column] == 10:
 					print(' X ',end='');
 				elif self.graph[row,column] == 11:
@@ -351,7 +317,7 @@ m.gameboard(m.coordsX,m.coordsY,m.height,m.width);
 while True:
 	m.turn();
 	if m.graph[int(m.point[0]),int(m.point[1])] == 9:
-		m.drawBoardFinsih(m.height,m.width);
+		m.drawBoardFinsih(m.height,m.width,True);
 		print('you hit a bomb ur dead');
 		print('GAME OVER');
 		break;
